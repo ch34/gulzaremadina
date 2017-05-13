@@ -1,0 +1,46 @@
+<?php
+
+$link = mysql_connect('gulzaremadinamdorg.ipagemysql.com', '1yxE06Io8Kc8k8y', 'EgeIqmOlvfQ5z5NC');
+
+if (!$link) {
+    die('Could not connect: ' . mysql_error());
+}
+
+$sql = 'SELECT * from prayertime where date = CURDATE()';
+
+mysql_select_db('wordpress_ek34cn24o5');
+
+$retval = mysql_query( $sql, $link);
+if(! $retval )
+{
+  die('Could not get data: ' . mysql_error());
+}
+$times =  mysql_fetch_array($retval);
+
+echo '
+<table class="style-2" style="height: 75px;" width="133">
+<tbody>
+<tr>
+<th colspan="2" bgcolor="#ddaa00">[gdlr_heading tag="h2" size="24px" color="#ffffff" font_weight="bold"]PRAYER TIMES [/gdlr_heading][gdlr_space height="-40px"]
+<br>' . date('l jS \of F Y', strtotime($times[0])) . '</th>
+</tr>
+<tr>
+<td><b>FAJR</b></td><td>' . date('h:i A', strtotime($times[1])). '</td><br>
+</tr>
+<tr>
+<td><b>DHUHR</b></td><td>' . date('h:i A', strtotime($times[2])). '<br></td>
+</tr>
+<tr>
+<td><b> ASR</b></td><td>' . date('h:i A', strtotime($times[3])). '<br></td>
+</tr>
+<tr>
+<td><b>MAGHRIB</b></td><td>' . date('h:i A', strtotime($times[4])). '<br></td>
+</tr>
+<tr>
+<td><b>ISHA</b></td><td>' . date('h:i A', strtotime($times[5])). '<br></td>
+</tr>
+</tbody>
+</table>
+';
+mysql_close($link);
+?>

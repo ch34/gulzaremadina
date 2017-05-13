@@ -1,0 +1,35 @@
+<?php 
+$date = new DateTime("now", new DateTimeZone('America/New_York') ); 
+
+$link = mysql_connect('gulzaremadinamdorg.ipagemysql.com', '1yxE06Io8Kc8k8y', 'EgeIqmOlvfQ5z5NC');
+
+if (!$link) { die('Could not connect: ' . mysql_error()); } 
+
+$sql1 = 'SELECT ID from Quran where Selected = 1'; 
+$sql2 = 'SELECT ID, SuraID, VerseID, AyahText, Selected from Quran where Selected = 1'; 
+
+mysql_select_db('wordpress_ek34cn24o5');
+$retId = mysql_query( $sql1, $link); 
+
+if(! $retId ) { die('Could not get data: ' . mysql_error()); } echo " ";
+$id = mysql_fetch_array($retId);
+
+if( $date->format( 'H') == 0 && $date->format( 'i') == 0) {
+$sql3 = 'UPDATE Quran SET Selected = 0 WHERE ID=' . $id[0];
+$OldRow = mysql_query( $sql3, $link );
+$id[0] = $id[0] + 1;
+
+$sql4 = 'UPDATE Quran SET Selected = 1 WHERE ID=' . $id[0];
+$CurrentRow = mysql_query( $sql4, $link );
+
+}
+
+$displayRow= mysql_query( $sql2, $link); 
+if(! $displayRow) { die('Could not get data: ' . mysql_error()); } 
+$data= mysql_fetch_array($displayRow);
+$AyahText = $data[3];
+echo '[gdlr_box_icon icon="icon-quote-left" icon_color="#008a32" icon_position="left" title="Verse from Quran" ]<i>';
+echo $AyahText; 
+echo '</i>[/gdlr_box_icon]';
+
+?>
